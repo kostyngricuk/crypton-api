@@ -1,0 +1,37 @@
+[build]
+  command = "yarn build"
+  functions = "netlify/functions"
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[dev]
+  command = "yarn dev"
+  port = 3001
+
+# Environment variables for local development
+[context.dev.environment]
+  NODE_ENV = "development"
+
+[context.production.environment]
+  NODE_ENV = "production"
+
+# Redirect all API routes to functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Redirect webhook routes to functions  
+[[redirects]]
+  from = "/webhook/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Handle SPA routing (if needed for a frontend)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

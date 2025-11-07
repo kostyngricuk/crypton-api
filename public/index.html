@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypton Telegram Bot API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .status {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .endpoint-title {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .endpoint-url {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            margin: 0.5rem 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Crypton Telegram Bot API</h1>
+
+        <h2>🔧 Quick Test</h2>
+        <p>Test the API by clicking this link: <a href="/api/health" target="_blank">Check API Health</a></p>
+    </div>
+
+    <script>
+        // Simple status indicator
+        fetch('/api/health')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Health Check:', data);
+            })
+            .catch(error => {
+                console.error('API Health Check Failed:', error);
+            });
+    </script>
+</body>
+</html>
