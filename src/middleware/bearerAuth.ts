@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import type { NextFunction, Request, Response } from "express";
-import { getBearerTokens, getLogSecurityEvents } from "../config/env.js";
+import { getBearerTokens } from "../config/env.js";
 import type { BearerAuthResult, ParsedAuthHeader } from "../types/middleware.js";
 
 /**
@@ -215,33 +215,6 @@ function validateBearerAuth(authHeader: string | undefined, path: string): Beare
 }
 
 /**
- * Logs security events related to authentication failures
- *
- * Emits structured security logs when LOG_SECURITY_EVENTS environment variable is enabled.
- * Includes timestamp, client IP, request path, and failure reason for security monitoring.
- *
- * @param event - Human-readable description of the security event
- * @param details - Additional context and metadata for the event
- *
- * @example
- * ```typescript
- * logAuthenticationFailure("Invalid Bearer token", {
- *   clientIp: "192.168.1.100",
- *   path: "/api/trades",
- *   error: "Invalid token"
- * });
- * ```
- */
-function logAuthenticationFailure(event: string, details: Record<string, unknown>): void {
-  if (getLogSecurityEvents()) {
-    console.warn(`[SECURITY] ${event}`, {
-      timestamp: new Date().toISOString(),
-      ...details,
-    });
-  }
-}
-
-/**
  * Gets the real client IP address from the request
  *
  * Extracts the client IP address, using the connection's remote address
@@ -298,14 +271,6 @@ export const bearerAuth = (req: Request, res: Response, next: NextFunction): voi
   const result = validateBearerAuth(authHeader, req.path);
 
   if (!result.success) {
-    // Log authentication failure for security monitoring
-    logAuthenticationFailure("Authentication failed", {
-      error: result.error,
-      path: req.path,
-      clientIp: getClientIP(req),
-      userAgent: req.get("User-Agent"),
-    });
-
     // Return 401 Unauthorized with standardized error response
     res.status(401).json({
       success: false,

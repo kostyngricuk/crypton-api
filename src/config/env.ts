@@ -15,10 +15,6 @@ const EnvSchema = z.object({
     .string()
     .default("false")
     .transform((val) => val.toLowerCase() === "true"),
-  LOG_SECURITY_EVENTS: z
-    .string()
-    .default("true")
-    .transform((val) => val.toLowerCase() === "true"),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   BEARER_TOKENS: z
     .string()
@@ -58,10 +54,6 @@ export const getAllowedDomains = (): string[] => {
 
 export const getTrustProxy = (): boolean => {
   return env.TRUST_PROXY;
-};
-
-export const getLogSecurityEvents = (): boolean => {
-  return env.LOG_SECURITY_EVENTS;
 };
 
 export const getBearerTokens = (): string[] => {

@@ -448,9 +448,7 @@ console.warn('Deprecated feature used');
 console.error('Failed to process:', error);
 
 // Security events
-if (process.env.LOG_SECURITY_EVENTS === 'true') {
-  console.warn('[SECURITY] Unauthorized access attempt');
-}
+
 ```
 
 ## Performance Optimization

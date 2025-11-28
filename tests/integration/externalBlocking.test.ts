@@ -11,19 +11,21 @@ import { domainWhitelist } from '../../src/middleware/domainWhitelist.js';
 // Create test Express app
 function createTestApp() {
   const app = express();
-  
+  // Ensure Express honors X-Forwarded-For for req.ip
+  app.set('trust proxy', true);
+
   // Apply domain whitelist middleware
   app.use(domainWhitelist);
-  
+
   // Test endpoints
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'Health check passed' });
   });
-  
+
   app.get('/api/data', (req, res) => {
     res.json({ data: 'test data', timestamp: new Date().toISOString() });
   });
-  
+
   return app;
 }
 

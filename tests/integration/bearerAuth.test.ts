@@ -5,7 +5,6 @@ import { bearerAuth } from "../../src/middleware/bearerAuth.js";
 // Mock the env module to provide test tokens
 jest.mock("../../src/config/env", () => ({
   getBearerTokens: jest.fn(() => ["test-token-local-dev-12345", "test-token-n8n-67890"]),
-  getLogSecurityEvents: jest.fn(() => false), // Disable logging in tests
 }));
 
 describe("Bearer Authentication - Integration Tests", () => {

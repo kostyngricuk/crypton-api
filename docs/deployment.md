@@ -143,14 +143,12 @@ For serverless deployment on Netlify, see the detailed [Netlify Deployment Guide
 **Environment Variables Required on Netlify:**
 - `TELEGRAM_BOT_TOKEN`
 - `WEB_API_HOST`, `WEB_API_ID`, `WEB_API_KEY`, `WEB_API_SECRET`
-- `BEARER_TOKENS` - **Important**: Use strong, randomly generated tokens in production
   ```bash
   # Generate with: openssl rand -base64 32
   ```
-- `ALLOWED_DOMAINS`
-- `TRUST_PROXY=true`
-- `LOG_SECURITY_EVENTS=true`
-- `NODE_ENV=production`
+ `ALLOWED_DOMAINS`
+ `TRUST_PROXY=true`
+ `NODE_ENV=production`
 
 **Quick steps:**
 ```bash
@@ -244,7 +242,7 @@ NODE_ENV=production
 # Security
 ALLOWED_DOMAINS=localhost,your-domain.com
 TRUST_PROXY=true
-LOG_SECURITY_EVENTS=true
+```
 ```
 
 See [Configuration Guide](./setup.md#environment-variables) for complete details.

@@ -150,24 +150,7 @@ NODE_ENV=production
 
 ### 6. Security Logging
 
-**Enable Security Event Logging:**
-```bash
-LOG_SECURITY_EVENTS=true
-```
 
-**Logged Events:**
-- Failed domain whitelist checks
-- Invalid API requests
-- Authentication failures
-- Suspicious activity patterns
-- Rate limit violations
-
-**Log Format:**
-```
-[SECURITY] Blocked request from unauthorized domain: evil.com
-[SECURITY] Invalid API credentials attempt
-[SECURITY] Rate limit exceeded for IP: 192.168.1.100
-```
 
 ## Best Practices
 
@@ -288,7 +271,6 @@ bot.command('admin-only', async (ctx) => {
 - Track failed authentication attempts
 - Monitor unusual trading patterns
 - Alert on suspicious API usage
-- Log all security events
 
 **Alert Thresholds:**
 ```typescript

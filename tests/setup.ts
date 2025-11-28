@@ -15,8 +15,9 @@ beforeAll(() => {
   // Set test environment variables
   process.env.NODE_ENV = 'test';
   process.env.ALLOWED_DOMAINS = 'localhost,127.0.0.1';
-  process.env.LOG_SECURITY_EVENTS = 'false'; // Disable logging in tests
   process.env.BEARER_TOKENS = 'test-token-123,test-token-456'; // Add test tokens for Bearer auth
+  // Ensure anti-spoofing logic uses X-Forwarded-For in tests
+  process.env.TRUST_PROXY = "true";
 });
 
 // Clean up after tests

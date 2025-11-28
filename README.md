@@ -69,7 +69,6 @@ Key environment variables:
 | `ALLOWED_DOMAINS` | Domain whitelist | ✅ |
 | `NODE_ENV` | Environment mode | ❌ |
 | `TRUST_PROXY` | Trust proxy headers for IP detection | ❌ |
-| `LOG_SECURITY_EVENTS` | Enable security event logging | ❌ |
 
 See complete configuration details in the [Setup Guide](./docs/setup.md#environment-variables).
 

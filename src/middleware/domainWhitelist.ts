@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { getAllowedDomains, getLogSecurityEvents, getTrustProxy } from "../config/env.js";
+import { getAllowedDomains, getTrustProxy } from "../config/env.js";
 import type { LocalhostValidationResult, SecurityResponse } from "../types/middleware.js";
 
 /**
@@ -82,32 +82,6 @@ function getRealClientIP(req: Request): string {
   return req.ip || req.connection.remoteAddress || "";
 }
 
-/**
- * Logs security events for monitoring and audit purposes
- *
- * Emits structured security logs when LOG_SECURITY_EVENTS environment variable is enabled.
- * Includes timestamp and contextual information for security monitoring systems.
- *
- * @param event - Human-readable description of the security event
- * @param details - Additional context and metadata for the event
- *
- * @example
- * ```typescript
- * logSecurityEvent("External domain access denied", {
- *   domain: "malicious.com",
- *   clientIp: "192.168.1.100",
- *   userAgent: "BadBot/1.0"
- * });
- * ```
- */
-function logSecurityEvent(event: string, details: Record<string, unknown>): void {
-  if (getLogSecurityEvents()) {
-    console.warn(`[SECURITY] ${event}`, {
-      timestamp: new Date().toISOString(),
-      ...details,
-    });
-  }
-}
 
 /**
  * Sanitizes domain names for error messages to maintain professional tone
@@ -227,10 +201,7 @@ export const domainWhitelist = (req: Request, res: Response, next: NextFunction)
     }
 
     // No origin and not localhost - deny
-    logSecurityEvent("Access attempt without origin", {
-      clientIp,
-      userAgent: req.get("User-Agent"),
-    });
+    // Security event logging removed by env variable
 
     const response = createSecurityResponse(
       "Access denied",
@@ -250,8 +221,10 @@ export const domainWhitelist = (req: Request, res: Response, next: NextFunction)
     domain = origin.replace(/^https?:\/\//, "").split("/")[0] || "";
   }
 
+
   // Enhanced localhost hostname support with anti-spoofing protection
-  if (domain.toLowerCase() === "localhost") {
+  // Match 'localhost' with or without port (e.g., 'localhost', 'localhost:3000')
+  if (/^localhost(\:\d+)?$/i.test(domain)) {
     // Validate the actual client IP is also localhost for security
     const clientIp = getRealClientIP(req);
     const localhostResult = validateLocalhostAddress(clientIp);
@@ -262,13 +235,7 @@ export const domainWhitelist = (req: Request, res: Response, next: NextFunction)
     }
 
     // Spoofing attempt - localhost domain claim but non-localhost IP
-    logSecurityEvent("Header spoofing attempt detected", {
-      timestamp: new Date().toISOString(),
-      spoofedDomain: domain,
-      spoofedOrigin: origin,
-      actualClientIp: clientIp,
-      userAgent: req.get("User-Agent"),
-    });
+    // Security event logging removed by env variable
 
     const response = createSecurityResponse(
       "Domain not allowed",
@@ -289,13 +256,7 @@ export const domainWhitelist = (req: Request, res: Response, next: NextFunction)
     }
 
     // Spoofing attempt
-    logSecurityEvent("Header spoofing attempt detected", {
-      timestamp: new Date().toISOString(),
-      spoofedDomain: domain,
-      spoofedOrigin: origin,
-      actualClientIp: clientIp,
-      userAgent: req.get("User-Agent"),
-    });
+    // Security event logging removed by env variable
 
     const response = createSecurityResponse(
       "Domain not allowed",
@@ -311,12 +272,7 @@ export const domainWhitelist = (req: Request, res: Response, next: NextFunction)
   });
 
   if (!isAllowed) {
-    logSecurityEvent("External domain access denied", {
-      domain,
-      origin,
-      clientIp: getRealClientIP(req),
-      userAgent: req.get("User-Agent"),
-    });
+    // Security event logging removed by env variable
 
     const response = createSecurityResponse(
       "Domain not allowed",

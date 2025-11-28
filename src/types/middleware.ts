@@ -27,8 +27,6 @@ export interface WhitelistConfiguration {
   localhostAddresses: string[];
   /** Whether to trust proxy headers for IP detection */
   trustProxy: boolean;
-  /** Whether to log security-related events */
-  logSecurityEvents: boolean;
 }
 
 /**
@@ -67,8 +65,6 @@ export interface EnvironmentConfig {
   ALLOWED_DOMAINS: string;
   /** Whether to trust proxy headers */
   TRUST_PROXY?: boolean;
-  /** Whether to log security events */
-  LOG_SECURITY_EVENTS?: boolean;
 }
 
 /**

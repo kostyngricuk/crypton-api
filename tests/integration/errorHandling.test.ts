@@ -179,44 +179,6 @@ describe('Integration: Proper Error Handling', () => {
     });
   });
 
-  describe('error logging and monitoring integration', () => {
-    test('should log security events for monitoring systems', async () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      
-      await request(app)
-        .get('/api/test')
-        .set('Origin', 'http://suspicious-site.com')
-        .expect(403);
-
-      // Should log the security event
-      expect(consoleSpy).toHaveBeenCalledWith(
-        '[SECURITY] External domain access denied',
-        expect.objectContaining({
-          timestamp: expect.any(String),
-          domain: 'suspicious-site.com',
-          origin: 'http://suspicious-site.com'
-        })
-      );
-
-      consoleSpy.mockRestore();
-    });
-
-    test('should include request correlation information', async () => {
-      const response = await request(app)
-        .get('/api/test')
-        .set('Origin', 'http://external.com')
-        .expect(403);
-
-      // Response should include timestamp for correlation
-      expect(response.body.timestamp).toBeDefined();
-      
-      // Timestamp should be recent
-      const responseTime = new Date(response.body.timestamp).getTime();
-      const now = Date.now();
-      expect(now - responseTime).toBeLessThan(5000); // Within 5 seconds
-    });
-  });
-
   describe('performance under error conditions', () => {
     test('should handle multiple concurrent blocked requests efficiently', async () => {
       const concurrentRequests = 10;

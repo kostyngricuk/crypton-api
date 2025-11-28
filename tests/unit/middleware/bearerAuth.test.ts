@@ -4,7 +4,6 @@ import { bearerAuth } from "../../../src/middleware/bearerAuth";
 // Mock the env module
 jest.mock("../../../src/config/env", () => ({
   getBearerTokens: jest.fn(() => ["test-token-123", "test-token-456"]),
-  getLogSecurityEvents: jest.fn(() => true),
 }));
 
 describe("bearerAuth Middleware - Unit Tests", () => {
@@ -247,24 +246,6 @@ describe("bearerAuth Middleware - Unit Tests", () => {
 
       expect(mockNext).toHaveBeenCalled();
       expect(statusMock).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("Authentication Failure Logging", () => {
-    it("should log authentication failure with IP and path", () => {
-      const consoleWarnSpy = jest.spyOn(console, "warn");
-      (mockRequest.get as jest.Mock).mockReturnValue("Bearer invalid-token");
-
-      bearerAuth(mockRequest as Request, mockResponse as Response, mockNext);
-
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[SECURITY]"),
-        expect.objectContaining({
-          clientIp: expect.any(String),
-          path: "/api/trades",
-          timestamp: expect.any(String),
-        }),
-      );
     });
   });
 
